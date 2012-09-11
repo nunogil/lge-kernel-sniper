@@ -142,6 +142,13 @@ config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
           loading your cpufreq low-level hardware driver, using the
           'interactive' governor for latency-sensitive workloads.
 
+config CPU_FREQ_DEFAULT_GOV_SMARTASS2
+  	bool "smartass2"
+  	select CPU_FREQ_GOV_SMARTASS2
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+    	  Use the CPUFreq governor 'Smartass2' as default.
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -254,6 +261,14 @@ config CPU_FREQ_GOV_HOTPLUG
 	  'ondemand' instead.
 
 	  If in doubt, say N.
+
+config CPU_FREQ_GOV_SMARTASS2
+  	tristate "'smartass2' cpufreq governor"
+  	depends on CPU_FREQ
+  	help
+    	  'Smartass2' - a "slightly more agressive smartass" governor!
+
+    	  If in doubt, say N.
 
 # 20110331 sookyoung.kim@lge.com LG-DVFS [START_LGE]
 config LGE_DVFS
