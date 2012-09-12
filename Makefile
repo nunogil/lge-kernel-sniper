@@ -334,11 +334,11 @@ CHECK		= sparse
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
-MODFLAGS	= -DMODULE
+MODFLAGS  = -DMODULE -O3 -mtune=cortex-a8 -marm -march=armv7-a -mfpu=neon -fmodulo-sched -fmodulo-sched-allow-regmoves -funswitch-loops -funroll-loops -fpredictive-commoning -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -ffast-math -fgcse-after-reload -ftree-vectorize -mvectorize-with-neon-quad -fipa-cp-clone -fsingle-precision-constant -pipe
 CFLAGS_MODULE   = $(MODFLAGS)
 AFLAGS_MODULE   = $(MODFLAGS)
 LDFLAGS_MODULE  = -T $(srctree)/scripts/module-common.lds
-CFLAGS_KERNEL	=
+CFLAGS_KERNEL   = -O3 -mtune=cortex-a8 -marm -march=armv7-a -mfpu=neon -fmodulo-sched -fmodulo-sched-allow-regmoves -funswitch-loops -funroll-loops -fpredictive-commoning -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -ffast-math -fgcse-after-reload -ftree-vectorize -mvectorize-with-neon-quad -fipa-cp-clone -fsingle-precision-constant -pipe
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
@@ -353,6 +353,7 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
+		   -Wno-unused-but-set-variable \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -fno-delete-null-pointer-checks
@@ -547,6 +548,9 @@ endif
 ifndef CONFIG_CC_STACKPROTECTOR
 KBUILD_CFLAGS += $(call cc-option, -fno-stack-protector)
 endif
+
+# Remove 'Unused but set variable' warning
+KBUILD_CFLAGS += $(call cc-option, -Wno-unused-but-set-variable)
 
 ifdef CONFIG_FRAME_POINTER
 KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
